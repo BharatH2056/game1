@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tic-tak-toe</title>
+    <style>
+        * {
+    padding:0px;
+    margin: 0px;
+}
+
+body {
+    background: #004e92;
+    height: 100vh;
+    text-align: center;
+}
+
+.container {
+    height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.game {
+    height: 60vh;
+    width: 60vh;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+
+.box {
+    width: 18vmin;
+    height: 18vmin;
+    border: none;
+    border-radius: 1rem;
+    box-shadow: 0rem 0rem 0.1rem rgb(0,0,0,0.5);
+    font-size: 5rem;
+    color:  #00ffff;
+    background-color: #000428;
+}
+
+.new {
+    padding: 1rem;
+    border: none;
+    border-radius: 1rem;
+    background-color: black;
+    color: white;
+}
+
+.win {
+    color: #ff69b4;
+    font-size: 3rem;
+    padding: 5rem;
+}
+
+.mes {
+    height: 50vh;
+    padding: 25vmin;
+}
+
+.hide {
+    display: none;
+}
+
+.re {
+     padding: 1rem;
+    border: none;
+    border-radius: 1rem;
+    background-color: black;
+    color: white;
+    margin-bottom: 5rem;
+}
+
+.pl {
+    color: #ffff00;
+    font-size: 3rem;
+    padding: 0rem;
+}
+
+    </style>
+</head>
+<body>
+    <div class="mes hide">
+        <p class="win">winner is</p>
+        <button class="new">New Game</button>
+    </div>
+    <p class="pl">Play</p>
+    <div class="container">
+        <div class="game">
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+            <button class="box"></button>
+        </div>
+    </div>
+    <button class="re">Reset Game</button>
+    <script>
+        let boxs = document.querySelectorAll(".box");
+let turnO = false
+let message = document.querySelector(".mes");
+let winn = document.querySelector(".win");
+let newg = document.querySelector(".new");
+let reg = document.querySelector(".re");
+let i=1;
+let e=1;
+
+const winPattern = [
+    [0, 1, 2],
+    [0, 3, 6],
+    [0, 4, 8],
+    [1, 4, 7],
+    [2, 5, 8],
+    [2, 4, 6],
+    [3, 4, 5],
+    [6, 7, 8]
+];
+
+const showWinner = (winner) => {
+    winn.innerText = `Congrajulation the winner is ${winner}`;
+    message.classList.remove("hide");
+    e=0;
+    for(let box of boxs) {
+        box.disabled = true;
+    }
+}
+
+
+
+const resetgame = () => {
+    turnO = false;
+    i=1;
+    e=1;
+    enableboxs();
+}
+
+const enableboxs = () => {
+    for(let box of boxs) {
+        box.disabled = false;
+        box.innerText = "";
+    }
+    message.classList.add("hide");
+}
+
+const checkWinner = () => {
+    for(let pos of winPattern) {
+        let pos1 = boxs[pos[0]].innerText;
+        let pos2 = boxs[pos[1]].innerText;
+        let pos3 = boxs[pos[2]].innerText;
+        if(pos1 != "" && pos2 !="" && pos3 !="") {
+            if(pos1 === pos2 && pos2 === pos3) {
+                showWinner(pos1);
+            }
+        }
+    }
+    if(i == 9 && e == 1) {
+    winn.innerText = `oohh! there is a draw.`;
+    message.classList.remove("hide");
+    }
+}
+
+boxs.forEach((box) => {
+    box.addEventListener("click",() => {
+        if(turnO) {
+            box.innerText = "O";
+            box.disabled = true;
+            turnO = false;
+        }
+        else {
+            box.innerText = "X";
+            box.disabled = true;
+            turnO =true;
+        }
+        checkWinner();
+        i++;
+    })
+})
+
+reg.addEventListener("click",resetgame);
+
+newg.addEventListener("click",resetgame);
+    </script>
+</body>
+</html>
